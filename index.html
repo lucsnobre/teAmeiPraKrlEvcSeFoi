@@ -16,9 +16,14 @@
             color: white;
             font-family: 'Helonik Extended', sans-serif;
             text-align: center;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
         }
         .roleta h1 {
             font-size: 88px;
+            text-align: left;
+            margin-left: 100px;
         }
         .destaque {
             color: #FFD32D;
@@ -29,16 +34,17 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            padding-bottom: 100px;
         }
         .carousel {
             display: flex;
             overflow: hidden;
-            width: 600px;
+            width: 1200px;
         }
         .skin-container {
             background-color: #3F3C38;
-            width: 500px;
-            height: 200px;
+            width: 230px;
+            height: 230px;
             padding: 10px;
             border-radius: 8px;
             margin: 5px;
@@ -55,28 +61,94 @@
             border: 2px solid #EDC017;
         }
         .carousel img {
-            width: 100px;
+            width: 150px;
             transition: transform 0.3s;
         }
         .carousel img:hover {
             transform: scale(1.1);
         }
-        button {
+        .next-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: absolute;
+            right: 10px;
+        }
+        .next-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Nova seção */
+        .search-section {
+            background-color: #21201E;
+            padding: 100px 0;
+            text-align: center;
+        }
+        .search-section h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .search-box {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .search-box input {
+            width: 300px;
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+        }
+        .search-box button {
             background-color: #FFD32D;
             border: none;
-            padding: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
             cursor: pointer;
+            border-radius: 5px;
+        }
+        .image-box {
+            width: 300px;
+            height: 300px;
+            background-color: #3F3C38;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border-radius: 8px;
+        }
+        .image-box img {
+            max-width: 100%;
+            max-height: 100%;
         }
     </style>
 </head>
 <body>
     <section class="roleta">
-        <h1>Confira algumas <span class="destaque">skins</span><br><span class="direita">disponiveis</span></h1>
+        <h1>Confira algumas <span class="destaque">skins</span><br>disponíveis</h1>
         <div class="carousel-container">
-            <button id="prevBtn">&#10094;</button>
             <div class="carousel" id="carousel"></div>
-            <button id="nextBtn">&#10095;</button>
+            <button id="nextBtn" class="next-btn">&#10095;</button>
         </div>
+    </section>
+
+    <section class="search-section">
+        <h2>Escolha a skin que preferir</h2>
+        <div class="search-box">
+            <input type="text" id="skinInput" placeholder="Digite o nome da skin">
+            <button onclick="searchSkin()">Buscar</button>
+        </div>
+        <div class="image-box" id="skinImageBox"></div>
     </section>
 
     <script>
@@ -86,13 +158,14 @@
         async function fetchSkins() {
             const response = await fetch('https://bymykel.github.io/CSGO-API/api/en/skins.json');
             skins = await response.json();
+            skins = skins.sort(() => Math.random() - 0.5);
             updateCarousel();
         }
 
         function updateCarousel() {
             const carousel = document.getElementById('carousel');
             carousel.innerHTML = '';
-            for (let i = currentIndex; i < currentIndex + 5; i++) {
+            for (let i = currentIndex; i < currentIndex + 6; i++) {
                 if (i < skins.length) {
                     const skin = skins[i];
                     let skinContainer = document.createElement('div');
@@ -112,14 +185,15 @@
             }
         }
 
-        document.getElementById('prevBtn').addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateCarousel();
-            }
-        });
+        function searchSkin() {
+            let input = document.getElementById('skinInput').value.toLowerCase();
+            let foundSkin = skins.find(skin => skin.name.toLowerCase() === input);
+            let imageBox = document.getElementById('skinImageBox');
+            imageBox.innerHTML = foundSkin ? `<img src="${foundSkin.image}" alt="${foundSkin.name}">` : "Skin não encontrada";
+        }
+
         document.getElementById('nextBtn').addEventListener('click', () => {
-            if (currentIndex < skins.length - 5) {
+            if (currentIndex < skins.length - 6) {
                 currentIndex++;
                 updateCarousel();
             }
