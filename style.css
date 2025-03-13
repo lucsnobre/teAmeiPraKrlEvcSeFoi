@@ -1,0 +1,55 @@
+body {
+    background-color: #121212;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+.roleta h1 {
+    font-size: 2em;
+    padding-left: 10000px;
+}
+
+.direita{
+    color: #1a160b;
+    background-color:#FFD32D;
+}
+
+.destaque {
+    color: #FFD32D;
+}
+.carousel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.carousel {
+    display: flex;
+    overflow: hidden;
+    width: 600px;
+}
+.carousel img {
+    width: 100px;
+    margin: 10px;
+    transition: transform 0.3s;
+}
+.carousel img:hover {
+    transform: scale(1.1);
+}
+button {
+    background-color: yellow;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+.busca {
+    margin-top: 50px;
+}
+#skinInput {
+    padding: 10px;
+    width: 200px;
+}
+.resultado img {
+    max-width: 200px;
+    margin-top: 20px;
+}
