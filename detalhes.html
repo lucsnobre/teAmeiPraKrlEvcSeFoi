@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Skin</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        @font-face {
+            font-family: 'Helonik Extended';
+            src: url(./fonts/ckhans-fonts-helonik-extended-bold-demo.otf);
+        }
+
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Helonik Extended', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            text-align: left;
+        }
+        .skin-details {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        .skin-image img {
+            width: 300px;
+            border: 2px solid #FFD32D;
+            border-radius: 10px;
+        }
+        .skin-info {
+            max-width: 600px;
+        }
+        .skin-info h1 {
+            font-size: 48px;
+            color: #FFD32D;
+        }
+        .cases-container {
+            margin-top: 40px;
+        }
+        .cases-container h2 {
+            font-size: 32px;
+        }
+        .cases-list {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .case-item {
+            background-color: #3F3C38;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            width: 150px;
+        }
+        .case-item img {
+            width: 100px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="skin-details">
+            <div class="skin-image">
+                <img id="skinImage" src="" alt="Skin">
+            </div>
+            <div class="skin-info">
+                <h1 id="skinName">Nome da Skin</h1>
+                <p id="skinDescription">Descrição da skin...</p>
+            </div>
+        </div>
+        <div class="cases-container">
+            <h2>Encontrado nas caixas:</h2>
+            <div class="cases-list" id="casesList"></div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const skin = JSON.parse(localStorage.getItem('selectedSkin'));
+            if (skin) {
+                document.getElementById('skinImage').src = skin.image;
+                document.getElementById('skinName').innerText = skin.name;
+                document.getElementById('skinDescription').innerText = skin.description || "Sem descrição disponível.";
+                
+                const casesList = document.getElementById('casesList');
+                if (skin.cases && skin.cases.length > 0) {
+                    skin.cases.forEach(cs => {
+                        let caseItem = document.createElement('div');
+                        caseItem.classList.add('case-item');
+                        caseItem.innerHTML = `<img src="${cs.image}" alt="${cs.name}"><p>${cs.name}</p>`;
+                        casesList.appendChild(caseItem);
+                    });
+                } else {
+                    casesList.innerHTML = "<p>Essa skin não está disponível em caixas.</p>";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
