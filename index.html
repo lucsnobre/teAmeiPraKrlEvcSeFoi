@@ -85,8 +85,8 @@
         .next-btn:hover {
             background-color: rgba(255, 255, 255, 0.3);
         }
-
-        /* Nova seção - Ajustada conforme Figma */
+        
+        /* Estilização da busca */
         .search-section {
             background-color: #21201E;
             padding: 100px;
@@ -134,6 +134,7 @@
             justify-content: center;
             border-radius: 8px;
             border: 2px solid #FFD32D;
+            cursor: pointer;
         }
         .image-box img {
             max-width: 100%;
@@ -143,7 +144,7 @@
 </head>
 <body>
     <section class="roleta">
-        <h1>Confira algumas <span class="destaque">skins</span><br>disponíveis</h1>
+        <h1>Confira algumas <span class="destaque">skins</span><br>disponiveis</h1>
         <div class="carousel-container">
             <div class="carousel" id="carousel"></div>
             <button id="nextBtn" class="next-btn">&#10095;</button>
@@ -180,6 +181,7 @@
                     const skin = skins[i];
                     let skinContainer = document.createElement('div');
                     skinContainer.classList.add('skin-container');
+                    skinContainer.addEventListener('click', () => redirectToDetails(skin));
                     
                     let img = document.createElement('img');
                     img.src = skin.image;
@@ -199,15 +201,18 @@
             let input = document.getElementById('skinInput').value.toLowerCase();
             let foundSkin = skins.find(skin => skin.name.toLowerCase().includes(input));
             let imageBox = document.getElementById('skinImageBox');
-            imageBox.innerHTML = foundSkin ? `<img src="${foundSkin.image}" alt="${foundSkin.name}">` : "Skin não encontrada";
+            if (foundSkin) {
+                imageBox.innerHTML = `<img src="${foundSkin.image}" alt="${foundSkin.name}">`;
+                imageBox.onclick = () => redirectToDetails(foundSkin);
+            } else {
+                imageBox.innerHTML = "Skin não encontrada";
+            }
         }
 
-        document.getElementById('nextBtn').addEventListener('click', () => {
-            if (currentIndex < skins.length - 6) {
-                currentIndex++;
-                updateCarousel();
-            }
-        });
+        function redirectToDetails(skin) {
+            localStorage.setItem('selectedSkin', JSON.stringify(skin));
+            window.location.href = 'detalhes.html';
+        }
 
         fetchSkins();
     </script>
