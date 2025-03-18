@@ -53,3 +53,20 @@ button {
     max-width: 200px;
     margin-top: 20px;
 }
+
+/* Estilo da barra de rolagem */
+::-webkit-scrollbar {
+    width: 10px; /* Largura da barra de rolagem */
+}
+
+/* Estilo da parte da barra que pode ser rolada */
+::-webkit-scrollbar-thumb {
+    background-color: #3498db; /* Cor do "polegar" da barra de rolagem */
+    border-radius: 10px; /* Deixa a borda arredondada */
+}
+
+/* Estilo da parte de fundo da barra de rolagem */
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Cor do fundo da barra */
+    border-radius: 10px; /* Deixa a borda arredondada */
+}
