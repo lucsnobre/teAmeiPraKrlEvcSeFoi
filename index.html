@@ -7,14 +7,15 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         @font-face {
-            font-family: 'Helonik Extended';
-            src: url(./fonts/ckhans-fonts-helonik-extended-bold-demo.otf);
+            
+            font-family: 'Spotify';
+            src: url(./fonts/Gotham-Bold.otf);
         }
         
         body {
             background-color: #121212;
             color: white;
-            font-family: 'Helonik Extended', sans-serif;
+            font-family: 'Spotify', sans-serif;
             text-align: center;
             margin: 0;
             padding: 0;
@@ -54,7 +55,7 @@
             justify-content: center;
             transition: all 0.3s;
             cursor: pointer;
-            font-family: 'Helonik Extended';
+            font-family: 'Spotify';
         }
         .skin-container:hover {
             background-color: #69645F;
@@ -85,47 +86,59 @@
         .next-btn:hover {
             background-color: rgba(255, 255, 255, 0.3);
         }
-
-        /* Nova seção */
+        
+        /* Estilização da busca */
         .search-section {
             background-color: #21201E;
-            padding: 100px 0;
-            text-align: center;
+            padding: 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .search-content {
+            flex: 1;
+            max-width: 600px;
         }
         .search-section h2 {
-            font-size: 48px;
-            margin-bottom: 20px;
+            font-size: 64px;
+            color: #FFD32D;
+            text-transform: uppercase;
         }
         .search-box {
             display: flex;
-            justify-content: center;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-top: 20px;
         }
         .search-box input {
-            width: 300px;
-            padding: 10px;
+            width: 400px;
+            padding: 15px;
             font-size: 18px;
             border: none;
             border-radius: 5px;
+            background: #3F3C38;
+            color: white;
         }
         .search-box button {
             background-color: #FFD32D;
             border: none;
-            padding: 10px 20px;
+            color: rgb(0, 0, 0);
+            font-family: 'Spotify';
+            box-shadow: 7px 5px 1px 3px lightblue;
+            padding: 15px 25px;
             font-size: 18px;
             cursor: pointer;
             border-radius: 5px;
         }
         .image-box {
-            width: 300px;
-            height: 300px;
+            width: 350px;
+            height: 350px;
             background-color: #3F3C38;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
             border-radius: 8px;
+            border: 2px solid #FFD32D;
+            cursor: pointer;
         }
         .image-box img {
             max-width: 100%;
@@ -143,10 +156,12 @@
     </section>
 
     <section class="search-section">
-        <h2>Escolha a skin que preferir</h2>
-        <div class="search-box">
-            <input type="text" id="skinInput" placeholder="Digite o nome da skin">
-            <button onclick="searchSkin()">Buscar</button>
+        <div class="search-content">
+            <h2>Escolha a skin que preferir</h2>
+            <div class="search-box">
+                <input type="text" id="skinInput" placeholder="Digite o nome da skin">
+                <button onclick="searchSkin()">Buscar</button>
+            </div>
         </div>
         <div class="image-box" id="skinImageBox"></div>
     </section>
@@ -170,6 +185,7 @@
                     const skin = skins[i];
                     let skinContainer = document.createElement('div');
                     skinContainer.classList.add('skin-container');
+                    skinContainer.addEventListener('click', () => redirectToDetails(skin));
                     
                     let img = document.createElement('img');
                     img.src = skin.image;
@@ -187,17 +203,20 @@
 
         function searchSkin() {
             let input = document.getElementById('skinInput').value.toLowerCase();
-            let foundSkin = skins.find(skin => skin.name.toLowerCase() === input);
+            let foundSkin = skins.find(skin => skin.name.toLowerCase().includes(input));
             let imageBox = document.getElementById('skinImageBox');
-            imageBox.innerHTML = foundSkin ? `<img src="${foundSkin.image}" alt="${foundSkin.name}">` : "Skin não encontrada";
+            if (foundSkin) {
+                imageBox.innerHTML = `<img src="${foundSkin.image}" alt="${foundSkin.name}">`;
+                imageBox.onclick = () => redirectToDetails(foundSkin);
+            } else {
+                imageBox.innerHTML = "Skin não encontrada";
+            }
         }
 
-        document.getElementById('nextBtn').addEventListener('click', () => {
-            if (currentIndex < skins.length - 6) {
-                currentIndex++;
-                updateCarousel();
-            }
-        });
+        function redirectToDetails(skin) {
+            localStorage.setItem('selectedSkin', JSON.stringify(skin));
+            window.location.href = 'detalhes.html';
+        }
 
         fetchSkins();
     </script>
