@@ -122,8 +122,34 @@
     flex-wrap: wrap;
     margin-top: 10px;
     padding-top: 10px;
-    border-top: 2px solid #444; /* Linha separadora */
 }
+
+.back-button {
+    background-color: #FFD32D;
+    border: none;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    transition: all 0.1s ease;
+    box-shadow: 0 4px #AC8907;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.back-button img {
+    width: 50%;
+    height: auto;
+}
+
+.back-button:active {
+    background-color: #FFC107;
+    transform: translateY(4px);
+    box-shadow: 0 1px #AC8907;
+}
+
 
 
 .crate-item {
@@ -136,13 +162,29 @@
     border-radius: 5px;
 }
 
+.separator {
+    height: 3px;
+    width: 100%;
+    background: linear-gradient(to right, white, yellow);
+    margin: 15px 0;
+    border-radius: 2px;
+}
+
+
+
+
+
     </style>
 </head>
 
 <body>
+    
     <div class="container">
         <div class="skin-details">
+            <a href="index.html" class="back-button"><img src="./img/weui_arrow-filled (1).png" alt="seta"></a>
+
             <div class="skin-image">
+                
                 <img id="skinImage" src="./images/desert_eagle_blaze.png" alt="Skin">
             </div>
             <div class="skin-info">
@@ -166,13 +208,15 @@
         </div>
 
         <div class="cases-container">
+            <div class="separator"></div>
             <h2>Encontrado nas caixas:</h2>
             <div class="cases-list" id="casesList">
                 <!-- Itens serão carregados aqui -->
             </div>
+            
             <div id="cratesList" class="crates-container"></div>
-<p id="noCrates">Nenhuma caixa disponível para essa skin.</p>
-        </div>
+            <p id="noCrates">Nenhuma caixa disponível para essa skin.</p>
+            
     </div>
 
     <script>
@@ -203,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
             noCrates.style.display = 'none';
             cratesList.innerHTML = ""; // Limpa antes de adicionar os novos itens
 
-            skin.crates.slice(0, 3).forEach(crate => {  // Pega no máximo 3 crates
+            skin.crates.slice(0, 6).forEach(crate => {  // Pega no máximo 3 crates
                 let crateItem = document.createElement('div');
                 crateItem.classList.add('crate-item');
                 crateItem.innerHTML = `

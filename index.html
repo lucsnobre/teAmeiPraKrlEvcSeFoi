@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API CS-GO</title>
+    <title>Skins CS-GO</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" type="imagex/png" href="./img/images.jfif">
     <style>
         @font-face {
             
@@ -135,6 +136,37 @@
             max-width: 100%;
             max-height: 100%;
         }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        .carousel-nav:hover {
+            opacity: 1;
+        }
+        .carousel-prev {
+            left: 410px;
+        }
+        .carousel-next {
+            right: 410px;
+            margin-top: -67px;
+            transform:rotate(180deg) ;
+        }
+        .carousel-nav img {
+            width: 15px;
+        }
+
     </style>
 </head>
 <body>
@@ -142,7 +174,8 @@
         <h1>Confira algumas <span class="destaque">skins</span><br>disponíveis</h1>
         <div class="carousel-container">
             <div class="carousel" id="carousel"></div>
-           
+            <div class="carousel-nav carousel-next" onclick="nextSkins()">
+                <img src="./img/weui_arrow-filled (1).png" alt="Avançar">
         </div>
     </section>
 
@@ -168,6 +201,7 @@
             updateCarousel();
         }
 
+   
         function updateCarousel() {
             const carousel = document.getElementById('carousel');
             carousel.innerHTML = '';
@@ -191,6 +225,26 @@
                 }
             }
         }
+
+        function nextSkins() {
+            if (currentIndex + 6 < skins.length) {
+                currentIndex += 6;
+                updateCarousel();
+            }
+        }
+
+        function prevSkins() {
+            if (currentIndex - 6 >= 0) {
+                currentIndex -= 6;
+                updateCarousel();
+            }
+        }
+
+        function redirectToDetails(skin) {
+            localStorage.setItem('selectedSkin', JSON.stringify(skin));
+            window.location.href = 'detalhes.html';
+        }
+
 
         function searchSkin() {
             let input = document.getElementById('skinInput').value.toLowerCase();
