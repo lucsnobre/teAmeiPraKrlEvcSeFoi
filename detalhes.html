@@ -114,6 +114,28 @@
             font-size: 20px;
             margin-top: 20px;
         }
+
+        .crates-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 2px solid #444; /* Linha separadora */
+}
+
+
+.crate-item {
+    text-align: center;
+    width: 120px;
+}
+
+.crate-item img {
+    width: 100%;
+    border-radius: 5px;
+}
+
     </style>
 </head>
 
@@ -129,6 +151,10 @@
                 <p class="skin-description" id="skinDescription">
                     As expensive as it is powerful, the Desert Eagle is an iconic pistol that is difficult to master but surprisingly accurate at long range. It has been painted by airbrushing transparent paints over a chrome base coat.
                 </p>
+             
+
+
+
                 <hr class="divider">
                 <div class="skin-attributes">
                     <p><strong>Raridade:</strong> <span id="skinRarity">Loading...</span></p>
@@ -144,45 +170,56 @@
             <div class="cases-list" id="casesList">
                 <!-- Itens serão carregados aqui -->
             </div>
-            <p class="no-cases" id="noCases">Nenhuma caixa disponível</p>
+            <div id="cratesList" class="crates-container"></div>
+<p id="noCrates">Nenhuma caixa disponível para essa skin.</p>
         </div>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const skin = JSON.parse(localStorage.getItem('selectedSkin'));
+document.addEventListener("DOMContentLoaded", () => {
+    const skin = JSON.parse(localStorage.getItem('selectedSkin'));
 
-            if (skin) {
-                document.getElementById('skinImage').src = skin.image;
-                document.getElementById('skinName').innerText = skin.name;
-                document.getElementById('skinDescription').innerText = skin.description;
+    if (skin) {
+        document.getElementById('skinImage').src = skin.image;
+        document.getElementById('skinName').innerText = skin.name;
+        document.getElementById('skinDescription').innerText = skin.description;
 
-                // Atualiza raridade, coleção, arma e categoria
-                const rarityElement = document.getElementById('skinRarity');
-                rarityElement.innerText = skin.rarity.name;
-                rarityElement.style.color = skin.rarity.color; // Aplica a cor da raridade vinda da API
+        // Atualiza raridade e aplica cor
+        const rarityElement = document.getElementById('skinRarity');
+        rarityElement.innerText = skin.rarity.name;
+        rarityElement.style.color = skin.rarity.color;
 
-                document.getElementById('skinCollection').innerText = skin.collection;
-                document.getElementById('skinWeapon').innerText = skin.weapon;
-                document.getElementById('skinCategory').innerText = skin.category;
+        // Corrigindo coleção e categoria
+        document.getElementById('skinCollection').innerText = skin.collections && skin.collections.length > 0 ? skin.collections[0].name : "Desconhecida";
+        document.getElementById('skinCategory').innerText = skin.category ? skin.category.name : "Desconhecido";
 
-                // Atualiza as caixas onde a skin pode ser encontrada
-                const casesList = document.getElementById('casesList');
-                const noCases = document.getElementById('noCases');
+        document.getElementById('skinWeapon').innerText = skin.weapon.name || "Desconhecido";
 
-                if (skin.cases && skin.cases.length > 0) {
-                    noCases.style.display = 'none';
-                    skin.cases.forEach(cs => {
-                        let caseItem = document.createElement('div');
-                        caseItem.classList.add('case-item');
-                        caseItem.innerHTML = `<img src="${cs.image}" alt="${cs.name}"><p>${cs.name}</p>`;
-                        casesList.appendChild(caseItem);
-                    });
-                } else {
-                    noCases.style.display = 'block';
-                }
-            }
-        });
+        // Atualiza as caixas (crates) onde a skin pode ser encontrada
+        const cratesList = document.getElementById('cratesList');
+        const noCrates = document.getElementById('noCrates');
+
+        if (skin.crates && skin.crates.length > 0) {
+            noCrates.style.display = 'none';
+            cratesList.innerHTML = ""; // Limpa antes de adicionar os novos itens
+
+            skin.crates.slice(0, 3).forEach(crate => {  // Pega no máximo 3 crates
+                let crateItem = document.createElement('div');
+                crateItem.classList.add('crate-item');
+                crateItem.innerHTML = `
+                    <img src="${crate.image}" alt="${crate.name}">
+                    <p>${crate.name}</p>
+                `;
+                cratesList.appendChild(crateItem);
+            });
+        } else {
+            noCrates.style.display = 'block';
+        }
+    }
+});
+
+
+
     </script>
 </body>
 
