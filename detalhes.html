@@ -5,176 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes da Skin</title>
-    <style>
-        @font-face {
-            font-family: 'Helonik Extended';
-            src: url(./fonts/Gotham-Bold.otf);
-        }
-
-        body {
-            background-color: #121212;
-            color: white;
-            font-family: 'Helonik Extended', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 50px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 50px;
-        }
-
-        .skin-details {
-            display: flex;
-            align-items: flex-start;
-            gap: 60px;
-        }
-
-        .skin-image img {
-            width: 400px;
-            height: auto;
-            object-fit: contain;
-        }
-
-        .skin-info {
-            flex: 1;
-        }
-
-        .skin-info h1 {
-            font-size: 64px;
-            color: #FFD32D;
-            margin: 0 0 20px 0;
-        }
-
-        .divider {
-            height: 2px;
-            width: 100%;
-            margin: 20px 0;
-            background: linear-gradient(90deg, #FFFFFF 0%, #FFD32D 100%);
-            border: none;
-        }
-
-        .skin-description {
-            color: #CCCCCC;
-            font-size: 20px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .skin-attributes {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            color: #CCCCCC;
-            font-size: 27px;
-        }
-
-        .skin-attributes span {
-            color: #FFFFFF;
-        }
-
-        .cases-container {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .cases-container h2 {
-            font-size: 24px;
-            color: #FFFFFF;
-        }
-
-        .cases-list {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .case-item {
-            background-color: #3F3C38;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            width: 150px;
-        }
-
-        .case-item img {
-            width: 100px;
-            border-radius: 5px;
-        }
-
-        /* Caso não haja caixa disponível */
-        .no-cases {
-            color: #FFFFFF;
-            font-size: 20px;
-            margin-top: 20px;
-        }
-
-        .crates-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 10px;
-    padding-top: 10px;
-}
-
-.back-button {
-    background-color: #FFD32D;
-    border: none;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    transition: all 0.1s ease;
-    box-shadow: 0 4px #AC8907;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.back-button img {
-    width: 50%;
-    height: auto;
-}
-
-.back-button:active {
-    background-color: #FFC107;
-    transform: translateY(4px);
-    box-shadow: 0 1px #AC8907;
-}
-
-
-
-.crate-item {
-    text-align: center;
-    width: 120px;
-}
-
-.crate-item img {
-    width: 100%;
-    border-radius: 5px;
-}
-
-.separator {
-    height: 3px;
-    width: 100%;
-    background: linear-gradient(to right, white, yellow);
-    margin: 15px 0;
-    border-radius: 2px;
-}
-
-
-
-
-
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <script src="./csDetalhes.js" defer></script>
 </head>
 
 <body>
@@ -199,10 +31,10 @@
 
                 <hr class="divider">
                 <div class="skin-attributes">
-                    <p><strong>Raridade:</strong> <span id="skinRarity">Loading...</span></p>
-                    <p><strong>Coleção:</strong> <span id="skinCollection">Loading...</span></p>
-                    <p><strong>Arma:</strong> <span id="skinWeapon">Loading...</span></p>
-                    <p><strong>Categoria:</strong> <span id="skinCategory">Loading...</span></p>
+                    <p><strong>Raridade:</strong> <span id="skinRarity">Carregando...</span></p>
+                    <p><strong>Coleção:</strong> <span id="skinCollection">Carregando...</span></p>
+                    <p><strong>Arma:</strong> <span id="skinWeapon">Carregando...</span></p>
+                    <p><strong>Categoria:</strong> <span id="skinCategory">Carregando...</span></p>
                 </div>
             </div>
         </div>
@@ -211,7 +43,6 @@
             <div class="separator"></div>
             <h2>Encontrado nas caixas:</h2>
             <div class="cases-list" id="casesList">
-                <!-- Itens serão carregados aqui -->
             </div>
             
             <div id="cratesList" class="crates-container"></div>
@@ -219,52 +50,7 @@
             
     </div>
 
-    <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const skin = JSON.parse(localStorage.getItem('selectedSkin'));
-
-    if (skin) {
-        document.getElementById('skinImage').src = skin.image;
-        document.getElementById('skinName').innerText = skin.name;
-        document.getElementById('skinDescription').innerText = skin.description;
-
-        // Atualiza raridade e aplica cor
-        const rarityElement = document.getElementById('skinRarity');
-        rarityElement.innerText = skin.rarity.name;
-        rarityElement.style.color = skin.rarity.color;
-
-        // Corrigindo coleção e categoria
-        document.getElementById('skinCollection').innerText = skin.collections && skin.collections.length > 0 ? skin.collections[0].name : "Desconhecida";
-        document.getElementById('skinCategory').innerText = skin.category ? skin.category.name : "Desconhecido";
-
-        document.getElementById('skinWeapon').innerText = skin.weapon.name || "Desconhecido";
-
-        // Atualiza as caixas (crates) onde a skin pode ser encontrada
-        const cratesList = document.getElementById('cratesList');
-        const noCrates = document.getElementById('noCrates');
-
-        if (skin.crates && skin.crates.length > 0) {
-            noCrates.style.display = 'none';
-            cratesList.innerHTML = ""; // Limpa antes de adicionar os novos itens
-
-            skin.crates.slice(0, 6).forEach(crate => {  // Pega no máximo 3 crates
-                let crateItem = document.createElement('div');
-                crateItem.classList.add('crate-item');
-                crateItem.innerHTML = `
-                    <img src="${crate.image}" alt="${crate.name}">
-                    <p>${crate.name}</p>
-                `;
-                cratesList.appendChild(crateItem);
-            });
-        } else {
-            noCrates.style.display = 'block';
-        }
-    }
-});
-
-
-
-    </script>
+    
 </body>
 
 </html>
