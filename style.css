@@ -155,16 +155,47 @@
             margin-top: -67px;
             
             
-            box-shadow: 0 -4px #b1b1b1; 
+            box-shadow: 0 3px #b1b1b1; 
         }
 
         .carousel-next:active{
             
          
-      box-shadow: 0 1px #b1b1b1; 
+            transform: translateY(0.3px); /* simula que o botão afundou */
+            box-shadow: 0 1px #7a7a7a;
+            transition: 0.4s;
         }
         .carousel-nav img {
             width: 15px;
         }
+
+        
+body {
+    --sb-track-color: #232e33;
+    --sb-thumb-color: #ffd32d;
+    --sb-size: 8px;
+  }
+  
+  body::-webkit-scrollbar {
+    width: var(--sb-size)
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 25px;
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 25px;
+    
+  }
+  
+  @supports not selector(::-webkit-scrollbar) {
+    body {
+      scrollbar-color: var(--sb-thumb-color)
+                       var(--sb-track-color);
+    }
+  }
 
     
