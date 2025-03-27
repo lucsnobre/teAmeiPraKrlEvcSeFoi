@@ -61,9 +61,7 @@
         .carousel img:hover {
             transform: scale(1.1);
         }
-        
-        
-        /* Estilização da busca */
+    
         .search-section {
             background-color: #21201E;
             padding: 100px;
@@ -74,11 +72,13 @@
         .search-content {
             flex: 1;
             max-width: 600px;
+           
         }
         .search-section h2 {
             font-size: 64px;
             color: #FFD32D;
             text-transform: uppercase;
+            text-align:left;
         }
         .search-box {
             display: flex;
